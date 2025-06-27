@@ -17,8 +17,7 @@ python -m venv xuni
 # 激活虚拟环境
 # macOS/Linux
 source xuni/bin/activate
-# Windows
-xuni\Scr
+
 
 
 ⸻
@@ -38,18 +37,19 @@ python manage.py startapp playground
 
 在 settings.py 中注册 app：
 
+```python
 INSTALLED_APPS = [
     ...,
     'playground',
 ]
-
+```
 
 ⸻
 
 🌐 添加 URL 和视图函数
 
 playground/views.py
-
+```python
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -58,9 +58,10 @@ def say_hello(request):
 
 def home(request):
     return render(request, 'home.html')
+```
 
 playground/urls.py
-
+``` python
 from django.urls import path
 from . import views
 
@@ -68,9 +69,11 @@ urlpatterns = [
     path('', views.home),
     path('hello/', views.say_hello),
 ]
+```
 
 在 myfirstweb/urls.py 中引入 app 的 urls：
 
+```python
 from django.contrib import admin
 from django.urls import path, include
 
@@ -78,14 +81,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('playground.urls')),
 ]
-
+```
 
 ⸻
 
 📄 创建模板文件
 	•	在项目中创建 templates 文件夹，与 playground 平级。
 	•	在 settings.py 中配置：
-
+ 
+``` python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -100,9 +104,9 @@ TEMPLATES = [
         },
     },
 ]
-
+```
 创建 templates/home.html：
-
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -114,21 +118,21 @@ TEMPLATES = [
     <p>欢迎访问我的网站。</p>
 </body>
 </html>
-
+```
 
 ⸻
 
 🛢️ 创建模型并迁移数据库
 
 playground/models.py 示例：
-
+```python
 from django.db import models
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image_url = models.CharField(max_length=200)
-
+```
 执行以下命令生成迁移文件并应用：
 
 python manage.py makemigrations
@@ -148,7 +152,7 @@ python manage.py createsuperuser
 💄 使用 Bootstrap 与模板继承
 
 templates/base.html：
-
+``` html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -162,9 +166,9 @@ templates/base.html：
   </div>
 </body>
 </html>
-
+```
 home.html 中继承：
-
+```html
 {% extends 'base.html' %}
 
 {% block title %}主页{% endblock %}
@@ -173,7 +177,7 @@ home.html 中继承：
 <h1>欢迎！</h1>
 <p>这是我的第一个 Django 网页。</p>
 {% endblock %}
-
+```
 
 ⸻
 
